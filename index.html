@@ -1,0 +1,170 @@
+# Arma 3 Basic Mission Template (A3-BMT)
+
+## Features
+
+* Automatic detection and configuration of the following addons:
+  * Advanced Combat Environment (ACE 3):
+    * Ability to select medical system, advanced ballistics, spectator and revive at mission start.
+    * Configuration of special roles (medics, engineers, captives, ...) without need of placing modules in
+    the editor.
+  * Advanced Combat Radio Environment 2 (ACRE 2):
+    * Distribution of radios at mission start. Can be toggled on/off using mission parameters.
+    * Configuration of radio channels at fireteam, squad and platoon level. Can be disabled at mission
+    start.
+    * Configured by default to support TvT.
+    * Babel configuration depending on the faction.
+  * ASR AI 3: Configuration of the addon at server and client side. It can be enabled/disabled using
+  mission parameters.
+  * Dynamic-AI-Creator: If enabled at mission start, the DAC-Logic `DAC_Source_Extern` is automatically
+  added and all playable units are added to the `DAC_STRPlayers` variable.
+  * T8-Units script (included). Can be enabled/disabled using mission parameters.
+  * Task Force Arrowhead Radio (TFAR):
+    * Distribution of radios at mission start. Can be toggled on/off using mission parameters.
+    * Configuration of radio channels at fireteam, squad and battalion level. Can be disabled at mission
+    start.
+    * Support for TvT game mode.
+    * Configuration of stereo in case multiple radios are assigned to a unit. Can be disabled at mission
+    start.
+* Join-In-Progress (JIP) support: access for JIP players can be allowed, denied or denied after a certain
+amount of time has passed.
+  * Allowance, denial or time limit can be controlled from administrator's briefing.
+  * If a player enters after the JIP allowed time has expired, spectator mode will be forced. This is not
+  applied if a player reconnected due to connection problems.
+  * The player is given the option to teleport. First it will try to move the player to the highest
+  ranking player in the squad (including vehicles if it has a free space). If it fails it will try with
+  faction and side player units.
+  * If a player disconnects and later reconnects, the following information is stored:
+    * Loadout.
+    * ACE 3 advanced fatigue, ACE roles (Medic, engineer, ...), ACE Overheating, ACE hearing, ...
+    * ACE Medical is **NOT** supported at the moment.
+* Custom respawn system fully configurable through mission parameters:
+  * Support for unlimited respawns, tickets (side or player based) or no respawns.
+  * Compatible with ALiVE Multispawn and ACE 3 Revive system.
+  * Side, faction and group dependant spawn points can be configured.
+  * Triggers a mission ending if certain conditions are met.
+* Group callsign configuration.
+* Unit equipment configuration depending on roles.
+* Briefing template depending on the faction, including a especial briefing for administrators.
+* Introduction screen sequence (UAV or simple text) depending on the unit's faction.
+* Zeus for administrator automatically added. Can be toggled on/off at mission start.
+* Objects and units placed in the editor or by other curators are automatically added to all curators.
+* Mission ending function.
+
+## Structure
+
+The template has its files organised in folders that share the same topic, with only two folders being
+relevant for the majority of the missions. A brief description is given below:
+
+* "\" (root foler): This folder contains those files that are essential for the mission and the template:
+description.ext, init.sqf, mission.sqm, bmt_components.hpp and this Readme file.
+* "\dac": This folder contains the configuration files for the addon Dynamic-AI-Creator. The mission
+creator does not need to place External DAC Logic since this is handled automatically by the template. This
+tool, created by Silola, allow generating AI quickly and dynamically and it allows to save some resources
+through AI caching techniques. More information can be found in
+http://forums.bistudio.com/showthread.php?176926-DAC-V3-1-(Dynamic-AI-Creator)-released.
+* "\externalScripts": This folder contains third party addons and scripts.
+  * "\externalScripts\T8": The `T8 Units` script by T-800a. This is a less dynamic AI creator that is
+  compatible with DAC. More information can be found in
+  https://forums.bistudio.com/topic/172795-release-t8-units-a-less-dynamic-ai-creator/.
+* "\images": Folder where all images are stored.
+* "\missionConfig": Folder where scripts and functions, that need to be modified for every mission are
+stored. It contains:
+  * "\missionConfig\ace3": Scripts and functions to configure ACE3.
+  * "\missionConfig\acre2": Scripts and functions to configure ACRE2.
+  * "\missionConfig\asrai3": Script to configure ASR AI 3.
+  * "\missionConfig\briefing": Scripts to generate the briefings for each of the supported factions.
+  Server administrator has a especial briefing.
+  * "\missionConfig\configEquipment": Scripts and functions to equip the unit for each of the supported
+  factions. They can be used for vehicles, infantry and ammo boxes.
+  * "\missionConfig\core": Scripts and functions that define core variables and/or check the configuration
+  of loaded addons.
+  * "\missionConfig\endMission": Functions that allow ending the mission once certain conditions are met.
+  * "\missionConfig\intro": Scripts for mission introduction screens. Each of the supported factions has an
+  own introduction.
+  * "\missionConfig\t8units": Scripts to configure the `T8 Units` unit generation script by T-800a. More
+  information can be found in
+  https://forums.bistudio.com/topic/172795-release-t8-units-a-less-dynamic-ai-creator/.
+  * "\missionConfig\tfar": Scripts and functions to configure el TFAR.
+  * "\missionConfig\bmt_components_addons.hpp": File where the configuration of external addons using the
+  scripts included in the template can be enabled or disabled.
+  * "\missionConfig\bmt_missionConfig.hpp": File included in `description.ext`. It declares variables such
+  as mission name, game type, author, respawn, ...
+  * "\missionConfig\bmt_missionDebriefing.hpp": File included in `description.ext`. It defines the
+  different endings of the mission.
+* "\src": Folder where scripts and functions, organised in subfolders, that must not be modified for a
+especific mission are stored. It contains:
+  * "\src\ace3": Scripts and functions to configure ACE3.
+  * "\src\acre2": Scripts and functions to configure ACRE2.
+  * "\src\briefing": Scripts to generate the briefings for each of the supported factions. Server
+  administrator has a especial briefing.
+  * "\src\configEquipment": Scripts and functions to equip the unit for each of the supported factions.
+  They can be used for vehicles, infantry and ammo boxes.
+  * "\src\configGroup": Scripts and functions that defines to which squad and fireteam the unit belongs to.
+  * "\src\configUnit": Scripts and functions to configure the unit, squad and fireteam as well as the
+  loadout of the unit depending on the role. Virtual arsenal profiles.
+  * "\src\core": Scripts and functions that define core variables and/or check the configuration of loaded
+  addons.
+  * "\src\dac": Scripts and functions to configure DAC. They automatically place the necessary game logics
+  for a proper DAC initialisation.
+  * "\src\intro": Effects during mission introduction screen.
+  * "\src\jip": Script for supporting JIP players. It can be configured in order to deny JIP players since
+  mission start, allow them to join only before a certain time has passed or to join at any time.
+  * "\src\misc": Miscellaneous scripts and functions.
+  * "\src\respawn": Contains a custom respawn template that supports tickets, unlimited respawns or no
+  respawn. It is integrated together with spectator scripts such as ACE3 or End Game (BI). JIP players are
+  also supported.
+  * "\src\t8units": Scripts to initialise T8 Units.
+  * "\src\tfar": Scripts and functions to configure TFAR.
+  * "\src\zeus": Scripts and functions to configure Zeus.
+
+## Supported addons and factions
+
+### Suppoted addons
+
+The following is a list showing the currently supported addons.
+
+* Contents:
+  * RHS Armed Forces of the Russian Federation (AFRF): http://www.rhsmods.org/mod/1.
+  * RHS United States Armed Forces (USAF): http://www.rhsmods.org/mod/2.
+  * RHS GREF
+  * Bundeswehr A3 (BWA3): http://www.bwmod.de/.
+* Artificial Intelligence (AI):
+  * ASR AI 3: https://github.com/robalo/mods/tree/master/asr_ai3/addons.
+* Realism:
+  * Advanced Combat Environment (ACE3): https://github.com/acemod/ACE3 or http://ace3mod.com/.
+  * Advanced Gameplay Modification (AGM): https://github.com/KoffeinFlummi/AGM. **Obsolete**.
+* Radio system:
+  * Advanced Combat Radio Environment 2 (ACRE2): http://forums.bistudio.com/showthread.php?191848-ACRE2-Stable-Release.
+  * Task Force Arrowhead Radio (TFAR): https://github.com/michail-nikolaev/task-force-arma-3-radio.
+
+### Supported factions
+
+The following list shows the supported factions for those scripts that allow a greater control degree of
+equipment and tasks:
+
+* Babel (ACRE2): *missionConfig/acre2/scripts/bmt_acre2_configuration.sqf* (babel).
+* Briefing: *src/briefing/scripts/bmt_briefing.sqf* and its child files in folder *missionConfig/briefing/scripts*.
+* Equipment: *src/configEquipment/functions/fn_configEquipment.sqf* and its child files in folder *missionConfig/configEquipment/functions/*.
+* Introduction: *missionConfig/intro/scripts/bmt_intro.sqf*.
+
+| **Faction**        | **Code**          |
+| ------------- | ------------- |
+| Blue Force                                                       | `blu_f`                            |
+| Blue Force Pacific                                               | `blu_t_f`                          |
+| CTRG                                                             | `blu_ctrg_f`                       |
+| Gendarmerie                                                      | `blu_gen_f`                        |
+| Civilians                                                        | `civ_f`                            |
+| FIA                                                              | `blu_g_f`, `ind_g_f` and `opf_g_f` |
+| Independent Force                                                | `ind_f`                            |
+| Syndikat                                                         | `ind_c_f`                          |
+| Opposing Force                                                   | `opf_f`                            |
+| Opposing Force Pacific                                           | `opf_t_f`                          |
+| Bundeswehr                                                       | `bwa3_faction`                     |
+| RHS Insurgents                                                   | `rhs_faction_insurgents`           |
+| RHS Russian Airborne Troops (Vozdushno-desantnye voyska)         | `rhs_faction_vdv`                  |
+| RHS Soviet Air Defense Troops (Voyska protivovozdushnoy oborony) | `rhs_faction_vpvo`                 |
+| RHS United States Army (Desert)                                  | `rhs_faction_usarmy_d`             |
+| RHS United States Army (Woodland)                                | `rhs_faction_usarmy_wd`            |
+| RHS United States Marine Corps (Desert)                          | `rhs_faction_usmc_d`               |
+| RHS United States Marine Corps (Woodland)                        | `rhs_faction_usmc_wd`              |
+| RHS United States Navy                                           | `rhs_faction_usn`                  |
