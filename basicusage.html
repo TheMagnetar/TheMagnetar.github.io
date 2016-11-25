@@ -1,0 +1,318 @@
+# Basic usage
+
+The basic usage of the Arma 3 Basic Mission Template is quite simple. The mission editor focuses only on
+modifying the files under the `missionConfig` folder in order to modify the introduction and the ending,
+unit equipment, radio frequencies, briefing and debriefing. This is a process that can be summarised in the
+following steps:
+
+1. Mission preparation: mission editing and copying the template scripts into the mission folder.
+2. Define mission parameters, debriefing addons and other properties.
+3. Assign a role and equipment to playable units.
+4. Write a briefing.
+5. Configure the introduction screen.
+6. Check that everything works and disable debug.
+
+## 1. Mission preparation
+
+This step is the mission preparation itself. Simply create the mission, place playable and enemy units,
+triggers and markers. If using ACE 3, ACRE 2 or DAC, there is no need to place modules since the template
+will configure each addon at mission start. It is recommended, specially if DAC or ACE 3 are used, to give a
+variable name to playable units.
+
+Once the basic mission layout is finished, the mission template files and scripts can be copied into the
+mission folder. From now on, **the mission will have to be executed in a Multiplayer environment**.
+
+## 2. Definition of mission parameters, addons and other properties
+
+Once all the files are in the mission folder, it is time to start customising them. All the files that need
+to be modified can be found in `missionConfig` folder. In the Basic Mission Template, the description.ext
+file does not need to be changed. It is instead divided into smaller files which help focusing on the task
+at hand. This is the suggested order of tweaking the files:
+
+1. `bmt_missionConfig.hpp`: Type of game, number of players, mission name, author, overview text, ...
+2. `bmt_missionDebriefing.hpp`: Different mission endings.
+3. `bmt_init.sqf`: Scripts that are included in `init.sqf`.
+3. `bmt_components_addons.hpp`: Determines which addons are going to be automatically configured by the
+template. However, if the PBO  is not found, the scripts will not execute.
+4. `bmt_missionParameters_definition.hpp`: Default mission parameters.
+
+### 2.1. Mission configuration
+
+In this phase basic mission configuration is performed.
+
+#### 2.1.1. Loading and mission selection screens
+
+The following entries define information that is shown during the loading screen or the mission selection:
+
+* Specify the mission name (`onLoadName`).
+* Add a brief mission description (`onLoadMission`). It will be shown in the loading screen.
+* Specify the author of the mission (`author`). It will be shown in the loading screen.
+* Add a more detailed mission description (`overviewText`). This entry is shown when selecting which
+mission is launched.
+* Modify the links to the pictures shown during the loading screen (`loadScreen`) and during the mission
+selection screen (`overviewPicture`).
+
+#### 2.1.2. Join-in-Progress (JIP) configuration
+
+Next it is time to define if Join-in-Progress (JIP) is allowed through all the mission or if it is denied
+after a certain amount of  time (`bmt_config_jipAllowedTime`). The value entered should be in seconds. If
+JIP is disabled (see section 2.4) this value is ignored.
+
+The server administrator can allow, deny or extend the JIP allowed time from administrator's briefing (see
+2.1.4).
+
+#### 2.1.3. Respawn configuration
+
+The Arma 3 Basic Mission Template has the respawn of type `BASE` as default. This is done in order to have
+more control over JIP and the number of respawns. If used in combination with the respawn template
+`bmt_respawn` the following options are available when configuring the respawn
+(`bmt_config_numAllowedRespawns`):
+
+* Unlimited respawns: Enter a value of -99.
+* Respawn is disabled: Enter a value of 0.
+* Limited number of respawns: Enter a positive value. If ACE 3 Revive is enabled this will limit the number
+of Revives instead.
+
+This template is compatible with ACE 3 Revive. In addition it will enter spectator mode when waiting for
+respawn using either ACE 3 Spectator mode or End Game Spectator mode. Radio mods like TFAR or ACRE 2 are
+also supported.
+
+Last, the amount of seconds between respawns has to be modified (`respawnDelay` for players,
+`respawnVehicleDelay` for vehicles).
+
+#### 2.1.4. Information for administrators (briefing)
+
+The following entries should be modified in order to configure information useful for administrators. The
+following entries are displayed only to the server administrator at the briefing screen as a separate
+entry:
+
+* List of addons  with the corresponding version number (`bmt_config_testedAddons`).
+* Mission version (`bmt_config_missionVersion`).
+* Collaborators (`bmt_config_missionCollaborators`). If using this template the entry
+*TheMagnetar (A3-BMT)* **must be present**.
+* Mission difficulty (`bmt_config_missionDifficulty`).
+* Mission summary for administrators (`bmt_config_missionSummary`). Do the administrators need to take a
+certain role as a Zeus?
+* Additional notes and remarks (`bmt_config_missionNotesAndRemarks`).
+* List of different mission endings. The administrator can trigger any of them at will.
+* JIP control allows the administrator to deny, allow or extend the JIP allowed time.
+
+### 2.3. Additional scripts in init.sqf (bmt_init.sqf)
+
+If any additional scripts that need to be executed during `init.sqf`, they can be added in the
+`/missionConfig/bmt_init.sqf` file. All the scripts and calls included in this file are executed after the
+template's scripts (JIP, ACRE and TFAR, ...) since it is included at the end of the `init.sqf` file.
+
+### 2.3. Debriefing and mission endings
+
+#### 2.3.1. Debriefing entries
+
+The next step consists of defining the different mission endings that are going to be triggered once
+certain conditions are met. First the entries shown during the debreifing screen must be added in
+`/missionConfig/bmt_missionDebriefing.hpp`. Any of the present entries can be removed at will. However, if
+the `bmt_respawn` Respawn template is used, the entry labelled as `Disaster` *must be present*: the mission
+will end once all allied units are dead as long as they do not have a possibility of respawning.
+
+Each of the entries in this file are going to be added to the administrator briefing. The administrator has
+then the possibility to trigger manually any ending.
+
+#### 2.3.2. Ending conditions
+The following step is to define which conditions trigger a specific ending. This is done in the
+`/missionConfig/endMission/functions/fn_endMission.sqf` file and requires a bit of programming. This file
+should contain as many endings as entries in the `/missionConfig/bmt_missionDebriefing.hpp`. An example
+of such entry can be:
+
+```
+if (destroyedAssets == numberAssets) then {
+    ["EndingSuccess1", true] spawn BIS_fnc_endMission;
+};
+```
+
+The ending labelled as `EndingSuccess1` is activated once the number of destroyed assets is equal to the
+number of assets to be destroyed.
+
+By itself, the function `bmt_fnc_endMission` does not do anything. It is not an Event Handler. Instead,
+this function is placed usually inside a trigger activation field. Note that it has to be executed in all
+the machines at once. A call of this function looks like:
+
+`[] remoteExecCall ["bmt_fnc_endMission, 0, true];`
+
+### 2.4. Addons and default mission parameters
+
+With the mission basic parameters and the different endings configured, it is now the turn to configure
+the scripts in the template that are going to be executed.
+
+* To determine which addons are going to be configured by the scripts in the template, the file
+`/missionConfig/bmt_components_addons.hpp` has to be modified. Simply comment the line of any addon that is
+not going to be used to disable the scripts. Note however, that if the PBO file is not loaded, the scripts
+will not execute. This is useful when playing a mission with two different radio mods (ACRE 2 or TFAR) for
+example, without having to change the mission itself.
+* The scripts in the template can be configured also at mission start through parameters. The default
+values can be changed in `/missionConfig/bmt_missionParameters_definitions.hpp`. Disabling a component in
+`/missionConfig/bmt_components_addons.hpp` will also hide the affected parameters in the mission lobby
+screen.
+
+## 3. Equipment and radio frequencies
+
+### 3.1 Equipment and callsign
+
+The *Arma 3 Basic Mission Template (A3-BMT)* provides with scripts to equip units and vehicles that are
+JIP safe. One can configure with a single line of code both the equipment and the callsign of a playabe
+unit. Simply, the following function has to be called inside the unit's *Init* field. Below are some
+examples:
+
+* Unit is a squad leader with callsign *Alpha 1-1*:
+```
+["Alpha 1", 1, "sl", this] call bmt_fnc_configUnit;
+```
+* Unit is a medic with callsign *Bravo 1-3*:
+```
+["Bravo 1", 3, "sl", this] call bmt_fnc_configUnit;
+```
+
+The equipment each unit will get depends on the faction that the unit belogns to. This can also be
+overwritten by specifying the faction as the fifth argument.
+
+* Unit is a rifleman with callsign *Alpha 2-3* and has the equipment of the RHS US Army (D) faction despite
+belonging to the vanilla BLUFOR faction:
+```
+["Alpha 2", 3, "rfl", this, "rhs_faction_usarmy_d"] call bmt_fnc_configUnit;
+```
+
+It is possible to pass additional configuration options to further configure the equipment if it is
+supported by the particular faction function. In this case the unit role is substituted by an array of
+strings. For example:
+
+* Unit is a grenadier with callsign *Charlie 1-1*, and uses a variant of the uniform which is with short
+sleeves:
+```
+["Charlie 1", 1, ["gr", "shortSleeve"], this] call bmt_fnc_configUnit;
+```
+
+For vehicles, crates and ammo boxes, the `bmt_fnc_configUnit` cannot be used. Instead, the inventory of
+such objects has to be configured through the `bmt_fnc_configEquipment` function. Note that while the third
+argument of this function is optional for regular units, vehicles, crates and ammo boxes must include the
+faction entry for the equipment function to work:
+
+* Ammo Box for the RHS USMC Woodland:
+```
+["ammobox", this, "rhs_faction_usmc_wd"] call bmt_fnc_configEquipment;
+```
+* Car with CSAT equipment:
+```
+["car", this, "opf_f"] call bmt_fnc_configEquipment;
+```
+
+### 3.2 Radio assignment and frequencies
+
+### 3.2.1. Radio assignment
+
+Which radios are given to a particular role can be configured in the
+`/missionCOnfig/core/functions/fn_core_commonVariables.sqf` file. The only interesting variables for the
+moment are:
+
+* `bmt_array_riflemanRadio`: like the AN/PRC-343.
+* `bmt_array_shortRangeRadio`: like AN/PRC-152 or AN/PRC-148.
+* `bmt_array_longRangeRadio`: radios in the backpack like AN/PRC-117F.
+
+It is important that the unit role defined inside the `bmt_fnc_configUnit` function is inside one of these
+arrays. Otherwise no radio will be assigned. For more detailed information on radio configuration, please
+refer to page 3b. Radio configuration of this wiki.
+
+### 3.2.2. Radio frequencies
+
+The radio frequencies assigned to a callsign can be configured in the next three arrays:
+
+* `bmt_array_groups` defines the different callsings, with the first entry of the inner arrays defining the
+general channel within, for example, a squad while the following entries define the fire teams within
+that squad. For example:
+
+  ```
+  bmt_array_groups = [["Wolf 1", "Wolf 1-1", "Wolf 1-2", "Wolf 1-3"]];
+  ```
+
+  would define a squad labeled *Wolf 1* with three fire teams: *Wolf 1-1*, *Wolf 1-2* and *Wolf 1-3*.
+  It is important that any callsign defined in the `bmt_fnc_configUnit` function call to be defined in this
+  array, with the first string matching any of the squad identifiers and the second  argument a fire team.
+  Therefore, for the previous example:
+
+  * The unit is assigned to *Wolf 1-2*.
+  ```
+  ["Wolf 1", 2, "sl", this] call bmt_fnc_configUnit;
+  ```
+  * The following is an invalid entry since fire team *Wolf 1-4* is not defined.
+  ```
+  ["Wolf 1", 4, "sl", this] call bmt_fnc_configUnit;
+  ```
+  * The following is also invalid since squad *Wolf A* is not defined.
+  ```
+  ["Wolf A", 2, "sl", this] call bmt_fnc_configUnit;
+  ```
+
+* `bmt_array_frequenciesShortRange` configures which frequencies are assigned to a particular callsign.
+These frequencies are only configured in short range radios (AN/PRC 152 and AN/PRC 148 and, in case of
+TFAR, AN/PRC 343 as well). Each array entry must have exactly the same number of elements as the
+`bmt_array_groups` array. Following the previous example with the *Wolf 1* squad:
+
+  ```
+  bmt_array_frequenciesShortRange  = [["200", "201", "202", "203"]];
+  ```
+
+  would assign 200 KHz as frequency for the general *Wolf 1* squad, and 201 KHz, 202 KHz and 203 KHz would
+  be the frequencies assigned to fire teams *Wolf 1-1*, *Wolf 1-2* and *Wolf 1-3* respectively.
+
+* `bmt_array_frequenciesLongRange` is the equivalent for long rage radios. In this array, only one entry
+must be present per squad.
+
+  ```
+  bmt_array_frequenciesLongRange = [["40"]];
+  ```
+
+  Would configure the long range radio of squad *Wolf 1* to 40 KHz.
+
+## 4. Briefing
+
+Next step is to define the briefing information that each playable unit, depending on its faction, will be
+able to read. The templates included in each of the files in
+`/missionConfig/briefing/scripts/bmt_briefing_*.sqf` follows the scheme shown below:
+
+* **SITREP:** Serves as a background for the mission and it sets its tone.
+* **Mission and Execution:** Brief description of the mission and how it is envisaged to be accomplished.
+* **Intel:** Intelligence report on enemy or allied units or any other mission relevant information.
+* **Logistics:** Description of the available supports (CAS, MEDEVAC, ...) or resupply options available to the players.
+* **Radio frequencies:** Summary of radio frequencies and callsigns.
+* **Credits:** not mission relevant, but details mission author and collaborators.
+
+Any other entry can be easily added using the following code:
+
+```
+player createDiaryRecord ["diary", ["Topic Title","Topic Text"]];
+```
+
+Note that the last entries are displayed first in the briefing screen.
+
+## 5. Introduction screen
+
+Introduction screen serves a double purpose. On one side it allows the scripts that are executed in
+`init.sqf` to make their job without the player noticing. On the other, it can serve as to give some
+basic information such as time, location and mission name.
+
+The mission introduction screen can be configured in `/missionConfig/intro/scripts/bmt_intro.sqf`. Each
+faction supported in the *Arma 3 Basic Mission Template* has its own entry, allowing a higher degree of
+customisation in the displayed text.
+
+Two kind of introduction screens are currently available: `blackScreen`, `playerCamera` and `uavFeed`. The first
+simply fades from black, the second is a virtual camera focused on the player and the third is aUAV camera. It can
+be selected by modifying the variable `_introType`.
+
+In case of `blackScreen` only the `_missionLocation` variable can be customised, but the `uavFeed` can have
+its marker, rotation, angle and speed customised. The `playerCamera`allows customising the animations, the use of
+night vision and the mission location.
+
+## 6. Final checks and disable debug
+
+The last step is to test that everything is working: triggers, equipment, callsigns, radio frequencies, ...
+Once everything is working as intended, it is time to disable the Debug information by default. This is
+done by changing the line `#define BMT_DEBUG 1` to `#define BMT_DEBUG 0` in
+`/missionConfig/bmt_missionParameters_definitions.hpp`. Doing so will disable those messages that are not
+critical.
