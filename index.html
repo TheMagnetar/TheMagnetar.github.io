@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Themagnetar.GitHub.io by TheMagnetar</title>
+    <title>Basic usage by TheMagnetar</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/github-light.css">
@@ -15,8 +15,8 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>Themagnetar.GitHub.io</h1>
-        <p>Web page information</p>
+        <h1>Basic usage</h1>
+        <p>Basic usage</p>
 
 
         <p class="view"><a href="https://github.com/TheMagnetar">View My GitHub Profile</a></p>
@@ -24,312 +24,398 @@
       </header>
       <section>
         <h1>
-<a id="arma-3-basic-mission-template-a3-bmt" class="anchor" href="#arma-3-basic-mission-template-a3-bmt" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Arma 3 Basic Mission Template (A3-BMT)</h1>
+<a id="basic-usage" class="anchor" href="#basic-usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Basic usage</h1>
+
+<p>The basic usage of the Arma 3 Basic Mission Template is quite simple. The mission editor focuses only on
+modifying the files under the <code>missionConfig</code> folder in order to modify the introduction and the ending,
+unit equipment, radio frequencies, briefing and debriefing. This is a process that can be summarised in the
+following steps:</p>
+
+<ol>
+<li>Mission preparation: mission editing and copying the template scripts into the mission folder.</li>
+<li>Define mission parameters, debriefing addons and other properties.</li>
+<li>Assign a role and equipment to playable units.</li>
+<li>Write a briefing.</li>
+<li>Configure the introduction screen.</li>
+<li>Check that everything works and disable debug.</li>
+</ol>
 
 <h2>
-<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h2>
+<a id="1-mission-preparation" class="anchor" href="#1-mission-preparation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Mission preparation</h2>
 
-<ul>
-<li>Automatic detection and configuration of the following addons:
+<p>This step is the mission preparation itself. Simply create the mission, place playable and enemy units,
+triggers and markers. If using ACE 3, ACRE 2 or DAC, there is no need to place modules since the template
+will configure each addon at mission start. It is recommended, specially if DAC or ACE 3 are used, to give a
+variable name to playable units.</p>
 
-<ul>
-<li>Advanced Combat Environment (ACE 3):
-
-<ul>
-<li>Ability to select medical system, advanced ballistics, spectator and revive at mission start.</li>
-<li>Configuration of special roles (medics, engineers, captives, ...) without need of placing modules in
-the editor.</li>
-</ul>
-</li>
-<li>Advanced Combat Radio Environment 2 (ACRE 2):
-
-<ul>
-<li>Distribution of radios at mission start. Can be toggled on/off using mission parameters.</li>
-<li>Configuration of radio channels at fireteam, squad and platoon level. Can be disabled at mission
-start.</li>
-<li>Configured by default to support TvT.</li>
-<li>Babel configuration depending on the faction.</li>
-</ul>
-</li>
-<li>ASR AI 3: Configuration of the addon at server and client side. It can be enabled/disabled using
-mission parameters.</li>
-<li>Dynamic-AI-Creator: If enabled at mission start, the DAC-Logic <code>DAC_Source_Extern</code> is automatically
-added and all playable units are added to the <code>DAC_STRPlayers</code> variable.</li>
-<li>T8-Units script (included). Can be enabled/disabled using mission parameters.</li>
-<li>Task Force Arrowhead Radio (TFAR):
-
-<ul>
-<li>Distribution of radios at mission start. Can be toggled on/off using mission parameters.</li>
-<li>Configuration of radio channels at fireteam, squad and battalion level. Can be disabled at mission
-start.</li>
-<li>Support for TvT game mode.</li>
-<li>Configuration of stereo in case multiple radios are assigned to a unit. Can be disabled at mission
-start.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Join-In-Progress (JIP) support: access for JIP players can be allowed, denied or denied after a certain
-amount of time has passed.
-
-<ul>
-<li>Allowance, denial or time limit can be controlled from administrator's briefing.</li>
-<li>If a player enters after the JIP allowed time has expired, spectator mode will be forced. This is not
-applied if a player reconnected due to connection problems.</li>
-<li>The player is given the option to teleport. First it will try to move the player to the highest
-ranking player in the squad (including vehicles if it has a free space). If it fails it will try with
-faction and side player units.</li>
-<li>If a player disconnects and later reconnects, the following information is stored:
-
-<ul>
-<li>Loadout.</li>
-<li>ACE 3 advanced fatigue, ACE roles (Medic, engineer, ...), ACE Overheating, ACE hearing, ...</li>
-<li>ACE Medical is <strong>NOT</strong> supported at the moment.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Custom respawn system fully configurable through mission parameters:
-
-<ul>
-<li>Support for unlimited respawns, tickets (side or player based) or no respawns.</li>
-<li>Compatible with ALiVE Multispawn and ACE 3 Revive system.</li>
-<li>Side, faction and group dependant spawn points can be configured.</li>
-<li>Triggers a mission ending if certain conditions are met.</li>
-</ul>
-</li>
-<li>Group callsign configuration.</li>
-<li>Unit equipment configuration depending on roles.</li>
-<li>Briefing template depending on the faction, including a especial briefing for administrators.</li>
-<li>Introduction screen sequence (UAV or simple text) depending on the unit's faction.</li>
-<li>Zeus for administrator automatically added. Can be toggled on/off at mission start.</li>
-<li>Objects and units placed in the editor or by other curators are automatically added to all curators.</li>
-<li>Mission ending function.</li>
-</ul>
+<p>Once the basic mission layout is finished, the mission template files and scripts can be copied into the
+mission folder. From now on, <strong>the mission will have to be executed in a Multiplayer environment</strong>.</p>
 
 <h2>
-<a id="structure" class="anchor" href="#structure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Structure</h2>
+<a id="2-definition-of-mission-parameters-addons-and-other-properties" class="anchor" href="#2-definition-of-mission-parameters-addons-and-other-properties" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Definition of mission parameters, addons and other properties</h2>
 
-<p>The template has its files organised in folders that share the same topic, with only two folders being
-relevant for the majority of the missions. A brief description is given below:</p>
+<p>Once all the files are in the mission folder, it is time to start customising them. All the files that need
+to be modified can be found in <code>missionConfig</code> folder. In the Basic Mission Template, the description.ext
+file does not need to be changed. It is instead divided into smaller files which help focusing on the task
+at hand. This is the suggested order of tweaking the files:</p>
 
-<ul>
-<li>"\" (root foler): This folder contains those files that are essential for the mission and the template:
-description.ext, init.sqf, mission.sqm, bmt_components.hpp and this Readme file.</li>
-<li>"\dac": This folder contains the configuration files for the addon Dynamic-AI-Creator. The mission
-creator does not need to place External DAC Logic since this is handled automatically by the template. This
-tool, created by Silola, allow generating AI quickly and dynamically and it allows to save some resources
-through AI caching techniques. More information can be found in
-<a href="http://forums.bistudio.com/showthread.php?176926-DAC-V3-1-(Dynamic-AI-Creator)-released">http://forums.bistudio.com/showthread.php?176926-DAC-V3-1-(Dynamic-AI-Creator)-released</a>.</li>
-<li>"\externalScripts": This folder contains third party addons and scripts.
-
-<ul>
-<li>"\externalScripts\T8": The <code>T8 Units</code> script by T-800a. This is a less dynamic AI creator that is
-compatible with DAC. More information can be found in
-<a href="https://forums.bistudio.com/topic/172795-release-t8-units-a-less-dynamic-ai-creator/">https://forums.bistudio.com/topic/172795-release-t8-units-a-less-dynamic-ai-creator/</a>.</li>
-</ul>
-</li>
-<li>"\images": Folder where all images are stored.</li>
-<li>"\missionConfig": Folder where scripts and functions, that need to be modified for every mission are
-stored. It contains:
-
-<ul>
-<li>"\missionConfig\ace3": Scripts and functions to configure ACE3.</li>
-<li>"\missionConfig\acre2": Scripts and functions to configure ACRE2.</li>
-<li>"\missionConfig\asrai3": Script to configure ASR AI 3.</li>
-<li>"\missionConfig\briefing": Scripts to generate the briefings for each of the supported factions.
-Server administrator has a especial briefing.</li>
-<li>"\missionConfig\configEquipment": Scripts and functions to equip the unit for each of the supported
-factions. They can be used for vehicles, infantry and ammo boxes.</li>
-<li>"\missionConfig\core": Scripts and functions that define core variables and/or check the configuration
-of loaded addons.</li>
-<li>"\missionConfig\endMission": Functions that allow ending the mission once certain conditions are met.</li>
-<li>"\missionConfig\intro": Scripts for mission introduction screens. Each of the supported factions has an
-own introduction.</li>
-<li>"\missionConfig\t8units": Scripts to configure the <code>T8 Units</code> unit generation script by T-800a. More
-information can be found in
-<a href="https://forums.bistudio.com/topic/172795-release-t8-units-a-less-dynamic-ai-creator/">https://forums.bistudio.com/topic/172795-release-t8-units-a-less-dynamic-ai-creator/</a>.</li>
-<li>"\missionConfig\tfar": Scripts and functions to configure el TFAR.</li>
-<li>"\missionConfig\bmt_components_addons.hpp": File where the configuration of external addons using the
-scripts included in the template can be enabled or disabled.</li>
-<li>"\missionConfig\bmt_missionConfig.hpp": File included in <code>description.ext</code>. It declares variables such
-as mission name, game type, author, respawn, ...</li>
-<li>"\missionConfig\bmt_missionDebriefing.hpp": File included in <code>description.ext</code>. It defines the
-different endings of the mission.</li>
-</ul>
-</li>
-<li>"\src": Folder where scripts and functions, organised in subfolders, that must not be modified for a
-especific mission are stored. It contains:
-
-<ul>
-<li>"\src\ace3": Scripts and functions to configure ACE3.</li>
-<li>"\src\acre2": Scripts and functions to configure ACRE2.</li>
-<li>"\src\briefing": Scripts to generate the briefings for each of the supported factions. Server
-administrator has a especial briefing.</li>
-<li>"\src\configEquipment": Scripts and functions to equip the unit for each of the supported factions.
-They can be used for vehicles, infantry and ammo boxes.</li>
-<li>"\src\configGroup": Scripts and functions that defines to which squad and fireteam the unit belongs to.</li>
-<li>"\src\configUnit": Scripts and functions to configure the unit, squad and fireteam as well as the
-loadout of the unit depending on the role. Virtual arsenal profiles.</li>
-<li>"\src\core": Scripts and functions that define core variables and/or check the configuration of loaded
-addons.</li>
-<li>"\src\dac": Scripts and functions to configure DAC. They automatically place the necessary game logics
-for a proper DAC initialisation.</li>
-<li>"\src\intro": Effects during mission introduction screen.</li>
-<li>"\src\jip": Script for supporting JIP players. It can be configured in order to deny JIP players since
-mission start, allow them to join only before a certain time has passed or to join at any time.</li>
-<li>"\src\misc": Miscellaneous scripts and functions.</li>
-<li>"\src\respawn": Contains a custom respawn template that supports tickets, unlimited respawns or no
-respawn. It is integrated together with spectator scripts such as ACE3 or End Game (BI). JIP players are
-also supported.</li>
-<li>"\src\t8units": Scripts to initialise T8 Units.</li>
-<li>"\src\tfar": Scripts and functions to configure TFAR.</li>
-<li>"\src\zeus": Scripts and functions to configure Zeus.</li>
-</ul>
-</li>
-</ul>
-
-<h2>
-<a id="supported-addons-and-factions" class="anchor" href="#supported-addons-and-factions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported addons and factions</h2>
+<ol>
+<li>
+<code>bmt_missionConfig.hpp</code>: Type of game, number of players, mission name, author, overview text, ...</li>
+<li>
+<code>bmt_missionDebriefing.hpp</code>: Different mission endings.</li>
+<li>
+<code>bmt_init.sqf</code>: Scripts that are included in <code>init.sqf</code>.</li>
+<li>
+<code>bmt_components_addons.hpp</code>: Determines which addons are going to be automatically configured by the
+template. However, if the PBO  is not found, the scripts will not execute.</li>
+<li>
+<code>bmt_missionParameters_definition.hpp</code>: Default mission parameters.</li>
+</ol>
 
 <h3>
-<a id="suppoted-addons" class="anchor" href="#suppoted-addons" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Suppoted addons</h3>
+<a id="21-mission-configuration" class="anchor" href="#21-mission-configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.1. Mission configuration</h3>
 
-<p>The following is a list showing the currently supported addons.</p>
+<p>In this phase basic mission configuration is performed.</p>
+
+<h4>
+<a id="211-loading-and-mission-selection-screens" class="anchor" href="#211-loading-and-mission-selection-screens" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.1.1. Loading and mission selection screens</h4>
+
+<p>The following entries define information that is shown during the loading screen or the mission selection:</p>
 
 <ul>
-<li>Contents:
-
-<ul>
-<li>RHS Armed Forces of the Russian Federation (AFRF): <a href="http://www.rhsmods.org/mod/1">http://www.rhsmods.org/mod/1</a>.</li>
-<li>RHS United States Armed Forces (USAF): <a href="http://www.rhsmods.org/mod/2">http://www.rhsmods.org/mod/2</a>.</li>
-<li>RHS GREF</li>
-<li>Bundeswehr A3 (BWA3): <a href="http://www.bwmod.de/">http://www.bwmod.de/</a>.</li>
+<li>Specify the mission name (<code>onLoadName</code>).</li>
+<li>Add a brief mission description (<code>onLoadMission</code>). It will be shown in the loading screen.</li>
+<li>Specify the author of the mission (<code>author</code>). It will be shown in the loading screen.</li>
+<li>Add a more detailed mission description (<code>overviewText</code>). This entry is shown when selecting which
+mission is launched.</li>
+<li>Modify the links to the pictures shown during the loading screen (<code>loadScreen</code>) and during the mission
+selection screen (<code>overviewPicture</code>).</li>
 </ul>
-</li>
-<li>Artificial Intelligence (AI):
+
+<h4>
+<a id="212-join-in-progress-jip-configuration" class="anchor" href="#212-join-in-progress-jip-configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.1.2. Join-in-Progress (JIP) configuration</h4>
+
+<p>Next it is time to define if Join-in-Progress (JIP) is allowed through all the mission or if it is denied
+after a certain amount of  time (<code>bmt_config_jipAllowedTime</code>). The value entered should be in seconds. If
+JIP is disabled (see section 2.4) this value is ignored.</p>
+
+<p>The server administrator can allow, deny or extend the JIP allowed time from administrator's briefing (see
+2.1.4).</p>
+
+<h4>
+<a id="213-respawn-configuration" class="anchor" href="#213-respawn-configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.1.3. Respawn configuration</h4>
+
+<p>The Arma 3 Basic Mission Template has the respawn of type <code>BASE</code> as default. This is done in order to have
+more control over JIP and the number of respawns. If used in combination with the respawn template
+<code>bmt_respawn</code> the following options are available when configuring the respawn
+(<code>bmt_config_numAllowedRespawns</code>):</p>
 
 <ul>
-<li>ASR AI 3: <a href="https://github.com/robalo/mods/tree/master/asr_ai3/addons">https://github.com/robalo/mods/tree/master/asr_ai3/addons</a>.</li>
+<li>Unlimited respawns: Enter a value of -99.</li>
+<li>Respawn is disabled: Enter a value of 0.</li>
+<li>Limited number of respawns: Enter a positive value. If ACE 3 Revive is enabled this will limit the number
+of Revives instead.</li>
 </ul>
-</li>
-<li>Realism:
+
+<p>This template is compatible with ACE 3 Revive. In addition it will enter spectator mode when waiting for
+respawn using either ACE 3 Spectator mode or End Game Spectator mode. Radio mods like TFAR or ACRE 2 are
+also supported.</p>
+
+<p>Last, the amount of seconds between respawns has to be modified (<code>respawnDelay</code> for players,
+<code>respawnVehicleDelay</code> for vehicles).</p>
+
+<h4>
+<a id="214-information-for-administrators-briefing" class="anchor" href="#214-information-for-administrators-briefing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.1.4. Information for administrators (briefing)</h4>
+
+<p>The following entries should be modified in order to configure information useful for administrators. The
+following entries are displayed only to the server administrator at the briefing screen as a separate
+entry:</p>
 
 <ul>
-<li>Advanced Combat Environment (ACE3): <a href="https://github.com/acemod/ACE3">https://github.com/acemod/ACE3</a> or <a href="http://ace3mod.com/">http://ace3mod.com/</a>.</li>
-<li>Advanced Gameplay Modification (AGM): <a href="https://github.com/KoffeinFlummi/AGM">https://github.com/KoffeinFlummi/AGM</a>. <strong>Obsolete</strong>.</li>
-</ul>
-</li>
-<li>Radio system:
-
-<ul>
-<li>Advanced Combat Radio Environment 2 (ACRE2): <a href="http://forums.bistudio.com/showthread.php?191848-ACRE2-Stable-Release">http://forums.bistudio.com/showthread.php?191848-ACRE2-Stable-Release</a>.</li>
-<li>Task Force Arrowhead Radio (TFAR): <a href="https://github.com/michail-nikolaev/task-force-arma-3-radio">https://github.com/michail-nikolaev/task-force-arma-3-radio</a>.</li>
-</ul>
-</li>
+<li>List of addons  with the corresponding version number (<code>bmt_config_testedAddons</code>).</li>
+<li>Mission version (<code>bmt_config_missionVersion</code>).</li>
+<li>Collaborators (<code>bmt_config_missionCollaborators</code>). If using this template the entry
+<em>TheMagnetar (A3-BMT)</em> <strong>must be present</strong>.</li>
+<li>Mission difficulty (<code>bmt_config_missionDifficulty</code>).</li>
+<li>Mission summary for administrators (<code>bmt_config_missionSummary</code>). Do the administrators need to take a
+certain role as a Zeus?</li>
+<li>Additional notes and remarks (<code>bmt_config_missionNotesAndRemarks</code>).</li>
+<li>List of different mission endings. The administrator can trigger any of them at will.</li>
+<li>JIP control allows the administrator to deny, allow or extend the JIP allowed time.</li>
 </ul>
 
 <h3>
-<a id="supported-factions" class="anchor" href="#supported-factions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported factions</h3>
+<a id="23-additional-scripts-in-initsqf-bmt_initsqf" class="anchor" href="#23-additional-scripts-in-initsqf-bmt_initsqf" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.3. Additional scripts in init.sqf (bmt_init.sqf)</h3>
 
-<p>The following list shows the supported factions for those scripts that allow a greater control degree of
-equipment and tasks:</p>
+<p>If any additional scripts that need to be executed during <code>init.sqf</code>, they can be added in the
+<code>/missionConfig/bmt_init.sqf</code> file. All the scripts and calls included in this file are executed after the
+template's scripts (JIP, ACRE and TFAR, ...) since it is included at the end of the <code>init.sqf</code> file.</p>
+
+<h3>
+<a id="23-debriefing-and-mission-endings" class="anchor" href="#23-debriefing-and-mission-endings" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.3. Debriefing and mission endings</h3>
+
+<h4>
+<a id="231-debriefing-entries" class="anchor" href="#231-debriefing-entries" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.3.1. Debriefing entries</h4>
+
+<p>The next step consists of defining the different mission endings that are going to be triggered once
+certain conditions are met. First the entries shown during the debreifing screen must be added in
+<code>/missionConfig/bmt_missionDebriefing.hpp</code>. Any of the present entries can be removed at will. However, if
+the <code>bmt_respawn</code> Respawn template is used, the entry labelled as <code>Disaster</code> <em>must be present</em>: the mission
+will end once all allied units are dead as long as they do not have a possibility of respawning.</p>
+
+<p>Each of the entries in this file are going to be added to the administrator briefing. The administrator has
+then the possibility to trigger manually any ending.</p>
+
+<h4>
+<a id="232-ending-conditions" class="anchor" href="#232-ending-conditions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.3.2. Ending conditions</h4>
+
+<p>The following step is to define which conditions trigger a specific ending. This is done in the
+<code>/missionConfig/endMission/functions/fn_endMission.sqf</code> file and requires a bit of programming. This file
+should contain as many endings as entries in the <code>/missionConfig/bmt_missionDebriefing.hpp</code>. An example
+of such entry can be:</p>
+
+<pre><code>if (destroyedAssets == numberAssets) then {
+    ["EndingSuccess1", true] spawn BIS_fnc_endMission;
+};
+</code></pre>
+
+<p>The ending labelled as <code>EndingSuccess1</code> is activated once the number of destroyed assets is equal to the
+number of assets to be destroyed.</p>
+
+<p>By itself, the function <code>bmt_fnc_endMission</code> does not do anything. It is not an Event Handler. Instead,
+this function is placed usually inside a trigger activation field. Note that it has to be executed in all
+the machines at once. A call of this function looks like:</p>
+
+<p><code>[] remoteExecCall ["bmt_fnc_endMission, 0, true];</code></p>
+
+<h3>
+<a id="24-addons-and-default-mission-parameters" class="anchor" href="#24-addons-and-default-mission-parameters" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.4. Addons and default mission parameters</h3>
+
+<p>With the mission basic parameters and the different endings configured, it is now the turn to configure
+the scripts in the template that are going to be executed.</p>
 
 <ul>
-<li>Babel (ACRE2): <em>missionConfig/acre2/scripts/bmt_acre2_configuration.sqf</em> (babel).</li>
-<li>Briefing: <em>src/briefing/scripts/bmt_briefing.sqf</em> and its child files in folder <em>missionConfig/briefing/scripts</em>.</li>
-<li>Equipment: <em>src/configEquipment/functions/fn_configEquipment.sqf</em> and its child files in folder <em>missionConfig/configEquipment/functions/</em>.</li>
-<li>Introduction: <em>missionConfig/intro/scripts/bmt_intro.sqf</em>.</li>
+<li>To determine which addons are going to be configured by the scripts in the template, the file
+<code>/missionConfig/bmt_components_addons.hpp</code> has to be modified. Simply comment the line of any addon that is
+not going to be used to disable the scripts. Note however, that if the PBO file is not loaded, the scripts
+will not execute. This is useful when playing a mission with two different radio mods (ACRE 2 or TFAR) for
+example, without having to change the mission itself.</li>
+<li>The scripts in the template can be configured also at mission start through parameters. The default
+values can be changed in <code>/missionConfig/bmt_missionParameters_definitions.hpp</code>. Disabling a component in
+<code>/missionConfig/bmt_components_addons.hpp</code> will also hide the affected parameters in the mission lobby
+screen.</li>
 </ul>
 
-<table>
-<thead>
-<tr>
-<th><strong>Faction</strong></th>
-<th><strong>Code</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Blue Force</td>
-<td><code>blu_f</code></td>
-</tr>
-<tr>
-<td>Blue Force Pacific</td>
-<td><code>blu_t_f</code></td>
-</tr>
-<tr>
-<td>CTRG</td>
-<td><code>blu_ctrg_f</code></td>
-</tr>
-<tr>
-<td>Gendarmerie</td>
-<td><code>blu_gen_f</code></td>
-</tr>
-<tr>
-<td>Civilians</td>
-<td><code>civ_f</code></td>
-</tr>
-<tr>
-<td>FIA</td>
-<td>
-<code>blu_g_f</code>, <code>ind_g_f</code> and <code>opf_g_f</code>
-</td>
-</tr>
-<tr>
-<td>Independent Force</td>
-<td><code>ind_f</code></td>
-</tr>
-<tr>
-<td>Syndikat</td>
-<td><code>ind_c_f</code></td>
-</tr>
-<tr>
-<td>Opposing Force</td>
-<td><code>opf_f</code></td>
-</tr>
-<tr>
-<td>Opposing Force Pacific</td>
-<td><code>opf_t_f</code></td>
-</tr>
-<tr>
-<td>Bundeswehr</td>
-<td><code>bwa3_faction</code></td>
-</tr>
-<tr>
-<td>RHS Insurgents</td>
-<td><code>rhs_faction_insurgents</code></td>
-</tr>
-<tr>
-<td>RHS Russian Airborne Troops (Vozdushno-desantnye voyska)</td>
-<td><code>rhs_faction_vdv</code></td>
-</tr>
-<tr>
-<td>RHS Soviet Air Defense Troops (Voyska protivovozdushnoy oborony)</td>
-<td><code>rhs_faction_vpvo</code></td>
-</tr>
-<tr>
-<td>RHS United States Army (Desert)</td>
-<td><code>rhs_faction_usarmy_d</code></td>
-</tr>
-<tr>
-<td>RHS United States Army (Woodland)</td>
-<td><code>rhs_faction_usarmy_wd</code></td>
-</tr>
-<tr>
-<td>RHS United States Marine Corps (Desert)</td>
-<td><code>rhs_faction_usmc_d</code></td>
-</tr>
-<tr>
-<td>RHS United States Marine Corps (Woodland)</td>
-<td><code>rhs_faction_usmc_wd</code></td>
-</tr>
-<tr>
-<td>RHS United States Navy</td>
-<td><code>rhs_faction_usn</code></td>
-</tr>
-</tbody>
-</table>
+<h2>
+<a id="3-equipment-and-radio-frequencies" class="anchor" href="#3-equipment-and-radio-frequencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. Equipment and radio frequencies</h2>
+
+<h3>
+<a id="31-equipment-and-callsign" class="anchor" href="#31-equipment-and-callsign" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.1 Equipment and callsign</h3>
+
+<p>The <em>Arma 3 Basic Mission Template (A3-BMT)</em> provides with scripts to equip units and vehicles that are
+JIP safe. One can configure with a single line of code both the equipment and the callsign of a playabe
+unit. Simply, the following function has to be called inside the unit's <em>Init</em> field. Below are some
+examples:</p>
+
+<ul>
+<li>Unit is a squad leader with callsign <em>Alpha 1-1</em>:</li>
+</ul>
+
+<pre><code>["Alpha 1", 1, "sl", this] call bmt_fnc_configUnit;
+</code></pre>
+
+<ul>
+<li>Unit is a medic with callsign <em>Bravo 1-3</em>:</li>
+</ul>
+
+<pre><code>["Bravo 1", 3, "sl", this] call bmt_fnc_configUnit;
+</code></pre>
+
+<p>The equipment each unit will get depends on the faction that the unit belogns to. This can also be
+overwritten by specifying the faction as the fifth argument.</p>
+
+<ul>
+<li>Unit is a rifleman with callsign <em>Alpha 2-3</em> and has the equipment of the RHS US Army (D) faction despite
+belonging to the vanilla BLUFOR faction:</li>
+</ul>
+
+<pre><code>["Alpha 2", 3, "rfl", this, "rhs_faction_usarmy_d"] call bmt_fnc_configUnit;
+</code></pre>
+
+<p>It is possible to pass additional configuration options to further configure the equipment if it is
+supported by the particular faction function. In this case the unit role is substituted by an array of
+strings. For example:</p>
+
+<ul>
+<li>Unit is a grenadier with callsign <em>Charlie 1-1</em>, and uses a variant of the uniform which is with short
+sleeves:</li>
+</ul>
+
+<pre><code>["Charlie 1", 1, ["gr", "shortSleeve"], this] call bmt_fnc_configUnit;
+</code></pre>
+
+<p>For vehicles, crates and ammo boxes, the <code>bmt_fnc_configUnit</code> cannot be used. Instead, the inventory of
+such objects has to be configured through the <code>bmt_fnc_configEquipment</code> function. Note that while the third
+argument of this function is optional for regular units, vehicles, crates and ammo boxes must include the
+faction entry for the equipment function to work:</p>
+
+<ul>
+<li>Ammo Box for the RHS USMC Woodland:</li>
+</ul>
+
+<pre><code>["ammobox", this, "rhs_faction_usmc_wd"] call bmt_fnc_configEquipment;
+</code></pre>
+
+<ul>
+<li>Car with CSAT equipment:</li>
+</ul>
+
+<pre><code>["car", this, "opf_f"] call bmt_fnc_configEquipment;
+</code></pre>
+
+<h3>
+<a id="32-radio-assignment-and-frequencies" class="anchor" href="#32-radio-assignment-and-frequencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.2 Radio assignment and frequencies</h3>
+
+<h3>
+<a id="321-radio-assignment" class="anchor" href="#321-radio-assignment" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.2.1. Radio assignment</h3>
+
+<p>Which radios are given to a particular role can be configured in the
+<code>/missionCOnfig/core/functions/fn_core_commonVariables.sqf</code> file. The only interesting variables for the
+moment are:</p>
+
+<ul>
+<li>
+<code>bmt_array_riflemanRadio</code>: like the AN/PRC-343.</li>
+<li>
+<code>bmt_array_shortRangeRadio</code>: like AN/PRC-152 or AN/PRC-148.</li>
+<li>
+<code>bmt_array_longRangeRadio</code>: radios in the backpack like AN/PRC-117F.</li>
+</ul>
+
+<p>It is important that the unit role defined inside the <code>bmt_fnc_configUnit</code> function is inside one of these
+arrays. Otherwise no radio will be assigned. For more detailed information on radio configuration, please
+refer to page 3b. Radio configuration of this wiki.</p>
+
+<h3>
+<a id="322-radio-frequencies" class="anchor" href="#322-radio-frequencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.2.2. Radio frequencies</h3>
+
+<p>The radio frequencies assigned to a callsign can be configured in the next three arrays:</p>
+
+<ul>
+<li>
+<p><code>bmt_array_groups</code> defines the different callsings, with the first entry of the inner arrays defining the
+general channel within, for example, a squad while the following entries define the fire teams within
+that squad. For example:</p>
+
+<pre><code>bmt_array_groups = [["Wolf 1", "Wolf 1-1", "Wolf 1-2", "Wolf 1-3"]];
+</code></pre>
+
+<p>would define a squad labeled <em>Wolf 1</em> with three fire teams: <em>Wolf 1-1</em>, <em>Wolf 1-2</em> and <em>Wolf 1-3</em>.
+It is important that any callsign defined in the <code>bmt_fnc_configUnit</code> function call to be defined in this
+array, with the first string matching any of the squad identifiers and the second  argument a fire team.
+Therefore, for the previous example:</p>
+
+<ul>
+<li>The unit is assigned to <em>Wolf 1-2</em>.</li>
+</ul>
+
+<pre><code>["Wolf 1", 2, "sl", this] call bmt_fnc_configUnit;
+</code></pre>
+
+<ul>
+<li>The following is an invalid entry since fire team <em>Wolf 1-4</em> is not defined.</li>
+</ul>
+
+<pre><code>["Wolf 1", 4, "sl", this] call bmt_fnc_configUnit;
+</code></pre>
+
+<ul>
+<li>The following is also invalid since squad <em>Wolf A</em> is not defined.</li>
+</ul>
+
+<pre><code>["Wolf A", 2, "sl", this] call bmt_fnc_configUnit;
+</code></pre>
+</li>
+<li>
+<p><code>bmt_array_frequenciesShortRange</code> configures which frequencies are assigned to a particular callsign.
+These frequencies are only configured in short range radios (AN/PRC 152 and AN/PRC 148 and, in case of
+TFAR, AN/PRC 343 as well). Each array entry must have exactly the same number of elements as the
+<code>bmt_array_groups</code> array. Following the previous example with the <em>Wolf 1</em> squad:</p>
+
+<pre><code>bmt_array_frequenciesShortRange  = [["200", "201", "202", "203"]];
+</code></pre>
+
+<p>would assign 200 KHz as frequency for the general <em>Wolf 1</em> squad, and 201 KHz, 202 KHz and 203 KHz would
+be the frequencies assigned to fire teams <em>Wolf 1-1</em>, <em>Wolf 1-2</em> and <em>Wolf 1-3</em> respectively.</p>
+</li>
+<li>
+<p><code>bmt_array_frequenciesLongRange</code> is the equivalent for long rage radios. In this array, only one entry
+must be present per squad.</p>
+
+<pre><code>bmt_array_frequenciesLongRange = [["40"]];
+</code></pre>
+
+<p>Would configure the long range radio of squad <em>Wolf 1</em> to 40 KHz.</p>
+</li>
+</ul>
+
+<h2>
+<a id="4-briefing" class="anchor" href="#4-briefing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>4. Briefing</h2>
+
+<p>Next step is to define the briefing information that each playable unit, depending on its faction, will be
+able to read. The templates included in each of the files in
+<code>/missionConfig/briefing/scripts/bmt_briefing_*.sqf</code> follows the scheme shown below:</p>
+
+<ul>
+<li>
+<strong>SITREP:</strong> Serves as a background for the mission and it sets its tone.</li>
+<li>
+<strong>Mission and Execution:</strong> Brief description of the mission and how it is envisaged to be accomplished.</li>
+<li>
+<strong>Intel:</strong> Intelligence report on enemy or allied units or any other mission relevant information.</li>
+<li>
+<strong>Logistics:</strong> Description of the available supports (CAS, MEDEVAC, ...) or resupply options available to the players.</li>
+<li>
+<strong>Radio frequencies:</strong> Summary of radio frequencies and callsigns.</li>
+<li>
+<strong>Credits:</strong> not mission relevant, but details mission author and collaborators.</li>
+</ul>
+
+<p>Any other entry can be easily added using the following code:</p>
+
+<pre><code>player createDiaryRecord ["diary", ["Topic Title","Topic Text"]];
+</code></pre>
+
+<p>Note that the last entries are displayed first in the briefing screen.</p>
+
+<h2>
+<a id="5-introduction-screen" class="anchor" href="#5-introduction-screen" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5. Introduction screen</h2>
+
+<p>Introduction screen serves a double purpose. On one side it allows the scripts that are executed in
+<code>init.sqf</code> to make their job without the player noticing. On the other, it can serve as to give some
+basic information such as time, location and mission name.</p>
+
+<p>The mission introduction screen can be configured in <code>/missionConfig/intro/scripts/bmt_intro.sqf</code>. Each
+faction supported in the <em>Arma 3 Basic Mission Template</em> has its own entry, allowing a higher degree of
+customisation in the displayed text.</p>
+
+<p>Two kind of introduction screens are currently available: <code>blackScreen</code>, <code>playerCamera</code> and <code>uavFeed</code>. The first
+simply fades from black, the second is a virtual camera focused on the player and the third is aUAV camera. It can
+be selected by modifying the variable <code>_introType</code>.</p>
+
+<p>In case of <code>blackScreen</code> only the <code>_missionLocation</code> variable can be customised, but the <code>uavFeed</code> can have
+its marker, rotation, angle and speed customised. The <code>playerCamera</code>allows customising the animations, the use of
+night vision and the mission location.</p>
+
+<h2>
+<a id="6-final-checks-and-disable-debug" class="anchor" href="#6-final-checks-and-disable-debug" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>6. Final checks and disable debug</h2>
+
+<p>The last step is to test that everything is working: triggers, equipment, callsigns, radio frequencies, ...
+Once everything is working as intended, it is time to disable the Debug information by default. This is
+done by changing the line <code>#define BMT_DEBUG 1</code> to <code>#define BMT_DEBUG 0</code> in
+<code>/missionConfig/bmt_missionParameters_definitions.hpp</code>. Doing so will disable those messages that are not
+critical.</p>
       </section>
       <footer>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
